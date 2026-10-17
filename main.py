@@ -14,6 +14,7 @@ import games
 import islamic
 import moderator
 import music
+import subscribe
 import tests
 import tools
 from common import (ADMIN_IDS, BACK_KB, BOT_TOKEN, MAIN_KB, MONGO_URL, leave_hooks, menu_kb, mode)
@@ -164,7 +165,9 @@ async def main():
     bot = Bot(BOT_TOKEN)
     dp = Dispatcher()
     dp.update.outer_middleware(Track())
-    for r in (router, moderator.router, downloader.router, music.router, islamic.router,
+    dp.message.outer_middleware(subscribe.SubCheck())
+    dp.callback_query.outer_middleware(subscribe.SubCheck())
+    for r in (subscribe.router, router, moderator.router, downloader.router, music.router, islamic.router,
               tests.router, tools.router, games.router, anon.router, last):
         dp.include_router(r)
     await bot.delete_webhook(drop_pending_updates=True)
