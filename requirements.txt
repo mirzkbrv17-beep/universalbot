@@ -1,0 +1,5 @@
+aiogram>=3.13,<4
+aiohttp
+yt-dlp
+motor>=3.5
+dnspython
